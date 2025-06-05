@@ -1,28 +1,35 @@
+'use client'
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { BookOpen, Users, Target, TrendingUp } from "lucide-react"
+import { useRouter } from "next/router"
 
 export default function HomePage() {
+  const router = useRouter();
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-10">
             <div className="flex items-center space-x-2">
               <Target className="h-8 w-8 text-blue-600" />
               <h1 className="text-2xl font-bold text-gray-900">AI Assessment Hub</h1>
             </div>
-            <nav className="flex items-center space-x-6">
-              <Link href="/problems" className="text-gray-600 hover:text-gray-900">
-                문제 풀이
-              </Link>
-              <Link href="/about" className="text-gray-600 hover:text-gray-900">
-                소개
-              </Link>
-              <Button>로그인</Button>
+            <div className="felx items-start space-x-6">
+                <Link href="/about" className="text-xl font-bold hover:text-gray-900 py-10">
+                  소개
+                </Link>
+                <Link href="/problems" className="text-xl font-bold hover:text-gray-900 py-10 ">
+                  문제풀이
+                </Link>
+            </div>
+            <nav className="flex items-center space-x-8">
+              <Button onClick={()=>{router.push("/auth/login")}}>로그인</Button>
             </nav>
           </div>
         </div>

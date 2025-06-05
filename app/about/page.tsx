@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Building2, BookOpen, ExternalLink, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
+import MenuLink from "@/components/menu-link"
 
 export default function AboutPage() {
   return (
@@ -17,12 +19,8 @@ export default function AboutPage() {
               <h1 className="text-2xl font-bold text-gray-900">AI Assessment Hub</h1>
             </Link>
             <nav className="flex items-center space-x-6">
-              <Link href="/problems" className="text-gray-600 hover:text-gray-900">
-                문제 풀이
-              </Link>
-              <Link href="/about" className="text-blue-600 font-medium">
-                소개
-              </Link>
+              <MenuLink href="/problems" className="text-gray-600 hover:text-gray-900 py-10" children="문제 풀이" />
+              <MenuLink href="/about" className="text-blue-600 font-medium py-10" children="소개"/>
               <Button>로그인</Button>
             </nav>
           </div>
