@@ -5,10 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { BookOpen, Users, Target, TrendingUp } from "lucide-react"
-import { useRouter } from "next/router"
+import { redirect } from "next/navigation"
 
 export default function HomePage() {
-  const router = useRouter();
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -29,7 +28,7 @@ export default function HomePage() {
                 </Link>
             </div>
             <nav className="flex items-center space-x-8">
-              <Button onClick={()=>{router.push("/auth/login")}}>로그인</Button>
+              <Button onClick={()=>{redirect("/auth/login")}}>로그인</Button>
             </nav>
           </div>
         </div>
