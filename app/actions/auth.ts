@@ -20,14 +20,24 @@ export async function registerUser(formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  const {error } = await supabase.auth.signUp({
+  const {data, error} = await supabase.auth.signUp({
     email,
     password
   })
   if(error){
     return {sucess: false, error: "가입 이메일을 확인해주세요."} 
   }
-
+  if(data.user){
+  const {error }= await supabase.from('profiles').insert({
+    id: data.user.id, // auth.users의 UUID
+    username: name,
+    avatar_url:"",
+    full_name: name,
+    })
+  }
+  if(error){
+    return {suceess: false, error:"데이터 추가 안됨."}
+  }
   // 새 사용자 생성
   const newUser: User = {
     id: Date.now().toString(),
