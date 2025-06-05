@@ -37,7 +37,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">AI 활용 역량 평가 기업 소개</h1>
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">AI 활용 역량 평가</h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             AI 시대의 핵심 역량을 평가하는 기업들의 채용 절차를 학습하고, 실제 출제될 법한 문제들을 통해 체계적으로
             준비하세요. 최신 AI 트렌드를 반영한 다양한 문제 유형으로 실전 감각을 기르고, 성공적인 취업을 위한 경쟁력을

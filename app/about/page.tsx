@@ -29,7 +29,7 @@ export default function AboutPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Title */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">AI 활용 역량 평가 기업 소개</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">AI 활용 역량 평가 소개</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             AI 시대의 핵심 역량을 평가하는 기업들의 채용 절차를 학습하고, 실제 출제될 법한 문제들을 통해 체계적으로
             준비하세요. 최신 AI 트렌드를 반영한 다양한 문제 유형으로 실전 감각을 기르고, 성공적인 취업을 위한 경쟁력을
