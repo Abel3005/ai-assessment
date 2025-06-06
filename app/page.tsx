@@ -17,7 +17,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      {<Header user={user}/>}
+      {<Header idx={0} user={user}/>}
 
       {/* Hero Section */}
       <section className="py-20">
@@ -31,67 +31,9 @@ export default async function HomePage() {
           <Image   src="test1.png" alt="" className="flex justify-center items-center mask-image-[radial-gradient(circle, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)]" width={600} height={600}/>
           </div>
           <div className="flex justify-center space-x-4">
-            <Link href="/problems">
-              <Button size="llg" className="bg-blue-600 hover:bg-blue-700">
-                문제 풀이 시작하기
-              </Button>
-            </Link>
-            <Link href="/about">
-              <Button size="lg" variant="outline">
-                자세히 알아보기
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
-
-      {/* Features */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card>
-              <CardHeader>
-                <BookOpen className="h-8 w-8 text-blue-600 mb-2" />
-                <CardTitle>다양한 문제 유형</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">객관식, 주관식, 노코딩, 코딩 실습까지 실제 기업 평가와 동일한 형태</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Users className="h-8 w-8 text-green-600 mb-2" />
-                <CardTitle>주요 기업 분석</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">네이버, 카카오, 삼성 등 주요 기업의 AI 역량 평가 방식 상세 분석</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <TrendingUp className="h-8 w-8 text-purple-600 mb-2" />
-                <CardTitle>최신 트렌드 반영</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">GPT-4o, 멀티모달 LLM 등 최신 AI 기술을 반영한 문제 구성</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Target className="h-8 w-8 text-red-600 mb-2" />
-                <CardTitle>체계적 학습</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">단계별 난이도와 상세한 해설로 효과적인 학습 경험 제공</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* Problem Types Preview */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,14 +1,16 @@
 "use server"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { Building2, Clock, Users, BookOpen, Code, Brain, Zap } from "lucide-react"
+import { Building2, Clock, Users, BookOpen, Code, Brain, Zap, Calendar } from "lucide-react"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { getCurrentUser } from "../actions/auth"
 import { redirect } from "next/navigation"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { mockExams } from "@/data/mock-exam"
 
 // 문제 데이터
 const problems = [
@@ -102,7 +104,7 @@ export default async function ProblemsPage() {
   
   return (
     <div className="min-h-screen bg-gray-50">
-      {<Header user={user}/>}
+      {<Header idx={2} user={user}/>}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
@@ -111,6 +113,136 @@ export default async function ProblemsPage() {
           <p className="text-lg text-gray-600 mb-6">
             실제 기업에서 출제되는 AI 활용 역량 평가 문제들을 통해 실전 감각을 기르세요.
           </p>
+          <Tabs defaultValue="problems" className="mb-8">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
+              <TabsTrigger value="problems">개별 문제</TabsTrigger>
+              <TabsTrigger value="mock-exams">모의고사</TabsTrigger>
+          </TabsList>
+
+          {/* Individual Problems Tab */}
+          <TabsContent value="problems" className="space-y-6">
+            {problems.map((problem, index) => {
+              const IconComponent = problem.icon
+              return (
+                <Card key={problem.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-4">
+                        <div className="p-2 bg-blue-50 rounded-lg">
+                          <IconComponent className="h-6 w-6 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Badge variant="outline">{problem.id}</Badge>
+                            <Badge className={getDifficultyColor(problem.difficulty)}>{problem.difficulty}</Badge>
+                            <Badge className={getTypeColor(problem.type)}>{problem.type}</Badge>
+                          </div>
+                          <CardTitle className="text-xl mb-2">{problem.title}</CardTitle>
+                          <CardDescription className="text-gray-600 mb-3">{problem.description}</CardDescription>
+                          <div className="text-sm text-gray-500 mb-2">
+                            <strong>영역:</strong> {problem.area}
+                          </div>
+                        </div>
+                      </div>
+                      <Link href={`/problems/${problem.id}`}>
+                        <Button className="bg-blue-600 hover:bg-blue-700">문제 풀기</Button>
+                      </Link>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-1">
+                          <Clock className="h-4 w-4" />
+                          <span>제한시간: {problem.timeLimit}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Users className="h-4 w-4" />
+                          <span>{problem.participants.toLocaleString()}명 참여</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span>진행률</span>
+                        <Progress value={Math.random() * 100} className="w-20" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+
+            {/* Load More */}
+            <div className="text-center mt-12">
+              <Button variant="outline" size="lg">
+                더 많은 문제 보기
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* Mock Exams Tab */}
+          <TabsContent value="mock-exams">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {mockExams.map((exam) => {
+                const IconComponent = exam.icon
+                return (
+                  <Card key={exam.id} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <div className="flex items-start space-x-4">
+                        <div className="p-2 bg-blue-50 rounded-lg">
+                          <IconComponent className="h-6 w-6 text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Badge variant="outline">{exam.id}</Badge>
+                            <Badge className={getDifficultyColor(exam.difficulty)}>{exam.difficulty}</Badge>
+                            {exam.company && <Badge className="bg-blue-100 text-blue-800">{exam.company}</Badge>}
+                          </div>
+                          <CardTitle className="text-xl mb-2">{exam.title}</CardTitle>
+                          <CardDescription className="text-gray-600">{exam.description}</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex flex-wrap gap-2">
+                          {exam.tags.map((tag, index) => (
+                            <Badge key={index} variant="outline" className="bg-gray-50">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex items-center space-x-2">
+                            <BookOpen className="h-4 w-4 text-gray-500" />
+                            <span className="text-sm text-gray-600">문제 수: {exam.problemCount}개</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Clock className="h-4 w-4 text-gray-500" />
+                            <span className="text-sm text-gray-600">제한시간: {exam.timeLimit}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4 text-gray-500" />
+                            <span className="text-sm text-gray-600">{exam.participants.toLocaleString()}명 참여</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Calendar className="h-4 w-4 text-gray-500" />
+                            <span className="text-sm text-gray-600">등록일: {exam.createdAt}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between items-center pt-0">
+                      <div className="text-sm text-gray-500">평균 점수: {Math.floor(60 + Math.random() * 25)}점</div>
+                      <Link href={`/mock-exams/${exam.id}`}>
+                        <Button className="bg-blue-600 hover:bg-blue-700">모의고사 시작</Button>
+                      </Link>
+                    </CardFooter>
+                  </Card>
+                )
+              })}
+            </div>
+          </TabsContent>
+        </Tabs>
           {/* Stats */}
         {/*
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -127,66 +259,6 @@ export default async function ProblemsPage() {
             </Card>
           </div>
         */}
-        </div>
-
-        {/* Problems List */}
-        <div className="space-y-6">
-          {problems.map((problem, index) => {
-            const IconComponent = problem.icon
-            return (
-              <Card key={problem.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="p-2 bg-blue-50 rounded-lg">
-                        <IconComponent className="h-6 w-6 text-blue-600" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Badge variant="outline">{problem.id}</Badge>
-                          <Badge className={getDifficultyColor(problem.difficulty)}>{problem.difficulty}</Badge>
-                          <Badge className={getTypeColor(problem.type)}>{problem.type}</Badge>
-                        </div>
-                        <CardTitle className="text-xl mb-2">{problem.title}</CardTitle>
-                        <CardDescription className="text-gray-600 mb-3">{problem.description}</CardDescription>
-                        <div className="text-sm text-gray-500 mb-2">
-                          <strong>영역:</strong> {problem.area}
-                        </div>
-                      </div>
-                    </div>
-                    <Link href={`/problems/${problem.id}`}>
-                      <Button className="bg-blue-600 hover:bg-blue-700">문제 풀기</Button>
-                    </Link>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span>제한시간: {problem.timeLimit}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Users className="h-4 w-4" />
-                        <span>{problem.participants.toLocaleString()}명 참여</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span>진행률</span>
-                      <Progress value={Math.random() * 100} className="w-20" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
-
-        {/* Load More */}
-        <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
-            더 많은 문제 보기
-          </Button>
         </div>
       </div>
     </div>
