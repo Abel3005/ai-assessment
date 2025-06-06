@@ -1,3 +1,4 @@
+"use server"
 import { getCurrentUser } from "@/app/actions/auth"
 import { redirect } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -18,6 +19,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { LogoutButton } from "@/components/logout-button"
+import { Header } from "@/components/header"
 
 // 임시 사용자 진도 데이터
 const getUserProgress = (userId: string) => {
@@ -57,28 +59,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <Building2 className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">AI Assessment Hub</h1>
-            </Link>
-            <nav className="flex items-center space-x-6">
-              <Link href="/problems" className="text-gray-600 hover:text-gray-900">
-                문제 풀이
-              </Link>
-              <Link href="/dashboard" className="text-blue-600 font-medium">
-                대시보드
-              </Link>
-              <div className="flex items-center space-x-3">
-                <span className="text-gray-700">안녕하세요, {user.name}님</span>
-                <LogoutButton />
-              </div>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header user={user}/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}

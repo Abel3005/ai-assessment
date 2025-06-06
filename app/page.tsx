@@ -1,4 +1,4 @@
-'use client'
+'use server'
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -6,46 +6,33 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { BookOpen, Users, Target, TrendingUp } from "lucide-react"
 import { redirect } from "next/navigation"
+import { Header } from "@/components/header"
+import { getCurrentUser } from "./actions/auth"
+import Image from "next/image"
 
-export default function HomePage() {
+export default async function HomePage() {
+
+  const user = await getCurrentUser();
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-10">
-            <div className="flex items-center space-x-2">
-              <Target className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">AI Assessment Hub</h1>
-            </div>
-            <div className="felx items-start space-x-6">
-                <Link href="/about" className="text-xl font-bold hover:text-gray-900 py-10">
-                  소개
-                </Link>
-                <Link href="/problems" className="text-xl font-bold hover:text-gray-900 py-10 ">
-                  문제풀이
-                </Link>
-            </div>
-            <nav className="flex items-center space-x-8">
-              <Button onClick={()=>{redirect("/auth/login")}}>로그인</Button>
-            </nav>
-          </div>
-        </div>
-      </header>
+      {<Header user={user}/>}
 
       {/* Hero Section */}
       <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">AI 활용 역량 평가</h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            AI 시대의 핵심 역량을 평가하는 기업들의 채용 절차를 학습하고, 실제 출제될 법한 문제들을 통해 체계적으로
-            준비하세요. 최신 AI 트렌드를 반영한 다양한 문제 유형으로 실전 감각을 기르고, 성공적인 취업을 위한 경쟁력을
-            확보할 수 있습니다.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center items-center">
+          <h1 className="text-5xl font-bold text-white mb-6">AI 활용 역량 평가</h1>
+          <p className="text-2xl text-blue-200 mb-8 max-w-3xl mx-auto">
+            AI 시대에 따라 바뀐 기업들의 채용 절차를 학습하고,<br />실제 출제될 법한 문제들을 통해 체계적으로
+            준비하세요.
           </p>
+          <div className="flex justify-center mb-12">
+          <Image   src="test1.png" alt="" className="flex justify-center items-center mask-image-[radial-gradient(circle, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)]" width={600} height={600}/>
+          </div>
           <div className="flex justify-center space-x-4">
             <Link href="/problems">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+              <Button size="llg" className="bg-blue-600 hover:bg-blue-700">
                 문제 풀이 시작하기
               </Button>
             </Link>
@@ -213,3 +200,5 @@ export default function HomePage() {
     </div>
   )
 }
+
+

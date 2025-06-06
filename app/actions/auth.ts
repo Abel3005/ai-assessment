@@ -5,7 +5,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 // 간단한 사용자 데이터 타입
-interface User {
+export interface User {
   id: string
   name: string
   email: string
@@ -28,7 +28,8 @@ export async function registerUser(formData: FormData) {
     return {sucess: false, error: "가입 이메일을 확인해주세요."} 
   }
   if(data.user){
-  const {error }= await supabase.from('profiles').insert({
+    
+  const { error }= await supabase.from('profiles').insert({
     id: data.user.id, // auth.users의 UUID
     username: name,
     avatar_url:"",
@@ -62,7 +63,6 @@ export async function loginUser(formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  // 사용자 찾기 (실제로는 비밀번호 해시 비교)
   const {error } = await supabase.auth.signInWithPassword({
     email,
     password
@@ -83,7 +83,7 @@ export async function loginUser(formData: FormData) {
     maxAge: 60 * 60 * 24 * 7, // 7일
   })
 
-  return { success: true }
+  return { success: true , session: cookieStore}
 }
 
 export async function logoutUser() {

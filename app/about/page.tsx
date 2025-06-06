@@ -1,3 +1,5 @@
+"use server"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -5,26 +7,14 @@ import { Separator } from "@/components/ui/separator"
 import { Building2, BookOpen, ExternalLink, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
+import { Header } from "@/components/header"
+import { getCurrentUser } from "../actions/auth"
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const user = await getCurrentUser()
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <Building2 className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">AI Assessment Hub</h1>
-            </Link>
-            <nav className="flex items-center space-x-6">
-              <Link href="/problems" className="text-gray-600 hover:text-gray-900 py-10">문제풀이</Link>
-              <Link href="/about" className="text-blue-600 font-medium py-10">소개</Link>
-              <Button>로그인</Button>
-            </nav>
-          </div>
-        </div>
-      </header>
+      {<Header user={user}/>}
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Title */}

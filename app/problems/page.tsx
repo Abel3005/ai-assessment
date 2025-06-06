@@ -1,9 +1,14 @@
+"use server"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Building2, Clock, Users, BookOpen, Code, Brain, Zap } from "lucide-react"
 import Link from "next/link"
+import { Header } from "@/components/header"
+import { getCurrentUser } from "../actions/auth"
+import { redirect } from "next/navigation"
 
 // 문제 데이터
 const problems = [
@@ -92,29 +97,12 @@ const getTypeColor = (type: string) => {
   }
 }
 
-export default function ProblemsPage() {
+export default async function ProblemsPage() {
+  const user = await getCurrentUser()
+  
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <Building2 className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">AI Assessment Hub</h1>
-            </Link>
-            <nav className="flex items-center space-x-6">
-              <Link href="/problems" className="text-blue-600 font-medium">
-                문제 풀이
-              </Link>
-              <Link href="/about" className="text-gray-600 hover:text-gray-900">
-                소개
-              </Link>
-              <Button>로그인</Button>
-            </nav>
-          </div>
-        </div>
-      </header>
+      {<Header user={user}/>}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
@@ -123,9 +111,9 @@ export default function ProblemsPage() {
           <p className="text-lg text-gray-600 mb-6">
             실제 기업에서 출제되는 AI 활용 역량 평가 문제들을 통해 실전 감각을 기르세요.
           </p>
-
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        {/*
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center space-x-2">
@@ -137,43 +125,8 @@ export default function ProblemsPage() {
                 </div>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-green-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">참여자 수</p>
-                    <p className="text-2xl font-bold text-gray-900">6,572</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-5 w-5 text-orange-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">평균 소요시간</p>
-                    <p className="text-2xl font-bold text-gray-900">34분</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-5 h-5 bg-purple-600 rounded"></div>
-                  <div>
-                    <p className="text-sm text-gray-600">평균 정답률</p>
-                    <p className="text-2xl font-bold text-gray-900">73%</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
+        */}
         </div>
 
         {/* Problems List */}
