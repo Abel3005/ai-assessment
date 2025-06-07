@@ -3,12 +3,10 @@ import { Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { User } from "@/app/actions/auth"
 import { LogoutButton } from "./logout-button"
 import { useState } from "react"
 
-
-export function Header({user}:{user:User|null}) {
+export function Header({idx ,user}:{idx:number,user:string|null}) {
     const [hoverNum, sethoverNum ] = useState(0);
 
     const router = useRouter()
@@ -39,7 +37,7 @@ export function Header({user}:{user:User|null}) {
             {!user && <Button onClick={() => { router.push("/auth/login") } }>로그인</Button>}
             {user && 
             <div className="flex items-center space-x-3">
-                <span className="text-gray-700">안녕하세요, {user.name}님</span>
+                <span className="text-gray-700">안녕하세요, {user}님</span>
                 <LogoutButton />
             </div>
             }

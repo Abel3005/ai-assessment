@@ -12,9 +12,11 @@ import { getCurrentUser } from "../actions/auth"
 
 export default async function AboutPage() {
   const user = await getCurrentUser()
+  const username = user?.user_metadata.username;
+
   return (
     <div className="min-h-screen bg-white">
-      {<Header idx={1} user={user}/>}
+      {<Header idx={1} user={username}/>}
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Title */}

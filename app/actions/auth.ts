@@ -2,6 +2,8 @@
 
 import { supabase } from "@/lib/supaBase"
 import { cookies } from "next/headers"
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import type { Database } from "@/lib/supaBase";
 import { redirect } from "next/navigation"
 
 // 간단한 사용자 데이터 타입
@@ -12,78 +14,51 @@ export interface User {
   createdAt: string
 }
 
-// 임시 사용자 저장소 (실제로는 데이터베이스 사용)
-const users: User[] = []
-
 export async function registerUser(formData: FormData) {
-  const name = formData.get("name") as string
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
+  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
-  const {data, error} = await supabase.auth.signUp({
+  const {data: authData, error :signupErr} = await supabase.auth.signUp({
     email,
-    password
+    password,
+    options:{
+      data: {full_name : name, username: name},
+    }
   })
-  if(error){
-    return {sucess: false, error: "가입 이메일을 확인해주세요."} 
+  if(signupErr){
+    return {sucess: false, error: signupErr.message} 
   }
-  if(data.user){
-    
-  const { error }= await supabase.from('profiles').insert({
-    id: data.user.id, // auth.users의 UUID
-    username: name,
-    avatar_url:"",
-    full_name: name,
-    })
-  }
-  if(error){
-    return {suceess: false, error:"데이터 추가 안됨."}
-  }
-  // 새 사용자 생성
-  const newUser: User = {
-    id: Date.now().toString(),
-    name,
-    email,
-    createdAt: new Date().toISOString(),
-  }
+  if(authData.user){
 
-  // 세션 쿠키 설정
-  const cookieStore = await cookies()
-  cookieStore.set("user", JSON.stringify(newUser), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7일
-  })
-
+    const { error:profileErr }= await supabase.from('profiles').insert({
+      id: authData.user.id, // auth.users의 UUID
+      username: name,
+      avatar_url:"",
+      full_name: name,
+       })
+    if(profileErr){
+      return {suceess: false, error:profileErr.message}
+    }
+  }
   return { success: true }
 }
 
 export async function loginUser(formData: FormData) {
+  const supabase = createRouteHandlerClient<Database>({cookies});
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  const {error } = await supabase.auth.signInWithPassword({
+  const {error: loginError} = await supabase.auth.signInWithPassword({
     email,
     password
   })
 
-  if(error){
-    return {sucess: false, error: "이메일 또는 비밀번호가 올바르지 않습니다."}
+  if(loginError){
+    return {sucess: false, error: loginError.message}
   }
-
-  const {data: {user},} = await supabase.auth.getUser()
-
-  // 세션 쿠키 설정
-  const cookieStore = await cookies()
-  cookieStore.set("user", JSON.stringify(user), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7일
-  })
-
-  return { success: true , session: cookieStore}
+  return { success: true }
 }
 
 export async function logoutUser() {
