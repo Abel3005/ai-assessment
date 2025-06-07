@@ -47,26 +47,33 @@ const getUserProgress = (userId: string) => {
 }
 
 export default async function DashboardPage() {
-  const user = await getCurrentUser()
+  let user = null
+  try{
+    user = await getCurrentUser();
+  }
+  catch(e){
+    console.error("getcurrentUser failed",e )
+  }
+  const username = user?.user_metadata.username;
 
   if (!user) {
     redirect("/auth/login")
   }
 
-  const progress = getUserProgress(user.id)
+  const progress = getUserProgress("")
   const accuracyRate = Math.round((progress.correctAnswers / progress.solvedProblems) * 100)
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <Header user={user}/>
+      <Header idx={3} username={username}/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">학습 대시보드</h1>
           <p className="text-lg text-gray-600">
-            안녕하세요, {user.name}님! 오늘도 AI 역량 향상을 위해 함께 학습해보세요.
+            안녕하세요, {username}님! 오늘도 AI 역량 향상을 위해 함께 학습해보세요.
           </p>
         </div>
 
