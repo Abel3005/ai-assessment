@@ -6,13 +6,6 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import type { Database } from "@/lib/supaBase";
 import { redirect } from "next/navigation"
 
-// 간단한 사용자 데이터 타입
-export interface User {
-  id: string
-  name: string
-  email: string
-  createdAt: string
-}
 
 export async function registerUser(formData: FormData) {
   const supabase = createRouteHandlerClient<Database>({ cookies });
@@ -62,23 +55,13 @@ export async function loginUser(formData: FormData) {
 }
 
 export async function logoutUser() {
-  const cookieStore = await cookies()
-  cookieStore.delete("user");
+  const supabase = createRouteHandlerClient<Database>({cookies});
   await supabase.auth.signOut();
   redirect("/")
 }
 
-export async function getCurrentUser(): Promise<User | null> {
-  const cookieStore = await cookies()
-  const userCookie = cookieStore.get("user")
-
-  if (!userCookie) {
-    return null
-  }
-
-  try {
-    return JSON.parse(userCookie.value)
-  } catch {
-    return null
-  }
+export async function getCurrentUser(){
+  const supabase = createRouteHandlerClient<Database>({cookies});
+  const{ data: {session}} = await supabase.auth.getSession();
+  return session?.user ?? null;
 }

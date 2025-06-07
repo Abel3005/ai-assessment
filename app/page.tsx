@@ -23,6 +23,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
+      {<Header idx={0} username={username}/>}
 
       {/* Hero Section */}
       <section className="py-20">
