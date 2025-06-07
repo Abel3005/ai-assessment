@@ -11,7 +11,13 @@ import { Header } from "@/components/header"
 import { getCurrentUser } from "../actions/auth"
 
 export default async function AboutPage() {
-  const user = await getCurrentUser()
+  let user = null
+  try{
+    user = await getCurrentUser();
+  }
+  catch(e){
+    console.error("getcurrentUser failed",e )
+  }
   const username = user?.user_metadata.username;
 
   return (
