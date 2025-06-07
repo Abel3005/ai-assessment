@@ -11,13 +11,18 @@ import { getCurrentUser } from "./actions/auth"
 import Image from "next/image"
 
 export default async function HomePage() {
-
-  const user = await getCurrentUser();
+  let user = null
+  try{
+    user = await getCurrentUser();
+  }
+  catch(e){
+    console.error("getcurrentUser failed",e )
+  }
+  const username = user?.user_metadata.username;
   
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      {<Header idx={0} user={user}/>}
 
       {/* Hero Section */}
       <section className="py-20">
