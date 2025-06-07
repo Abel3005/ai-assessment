@@ -100,11 +100,18 @@ const getTypeColor = (type: string) => {
 }
 
 export default async function ProblemsPage() {
-  const user = await getCurrentUser()
+  let user = null
+  try{
+    user = await getCurrentUser();
+  }
+  catch(e){
+    console.error("getcurrentUser failed",e )
+  }
+  const username = user?.user_metadata.username;
   
   return (
     <div className="min-h-screen bg-gray-50">
-      {<Header idx={2} user={user}/>}
+      {<Header idx={2} username={username}/>}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}

@@ -80,7 +80,7 @@ export default function ProblemDetailPage({ params }: { params: { id: string } }
         return "bg-gray-100 text-gray-800"
     }
   }
-
+  
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}

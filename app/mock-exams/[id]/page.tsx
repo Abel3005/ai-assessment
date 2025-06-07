@@ -11,7 +11,7 @@ import Link from "next/link"
 import { mockExams } from "@/data/mock-exam"
 
 // 문제 타입 정의
-interface Problem {
+interface Problem { 
   id: string
   title: string
   type: "객관식" | "주관식" | "노코딩" | "코딩"
